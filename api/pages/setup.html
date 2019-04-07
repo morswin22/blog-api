@@ -1,0 +1,142 @@
+<style>
+    input:disabled {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+<header>Setup the posts format</header>
+
+<section>
+    <input type="text" placeholder="ID" id="id">
+    <input type="text" placeholder="Name (optional)" id="name">
+    <select>
+        <option>text</option>
+        <option>textarea</option>
+        <option>date</option>
+    </select>
+    <input type="text" placeholder="Default value (optional)" id="value">
+    <button>Add</button>
+</section>
+
+<p>This tags will help you with automation</p>
+<ul>
+    <li>POST_ID - will be replaced with current post identificator</li>
+    <li>CURRENT_TIME - will be replaced with current time (ex. <i class="currentTime"></i>)</li>
+    <li>CURRENT_DATE - will be replaced with current date (ex. <i class="currentDate"></i>)</li>
+    <li>CURRENT_TIME&DATE - will be replaced with current time and date (ex. <i class="currentTimeDate"></i>)</li>
+    <li>CURRENT_USER - will be replaced with the name of currently logged user (ex. <i><?=$userName?></i>)</li>
+</ul>
+
+<p>Preview</p>
+<ul class="list"></ul>
+
+<button id="setup">Setup</button>
+
+<script>
+    function getZeros(num) {
+        return (num < 10) ? "0"+num : num;
+    }
+
+    const currentTime = document.querySelector('.currentTime');
+    const currentDate = document.querySelector('.currentDate');
+    const currentTimeDate = document.querySelector('.currentTimeDate');
+    function tips() {
+        let time = new Date();
+        currentTime.innerHTML = getZeros(time.getHours()) + ":" + getZeros(time.getMinutes());
+        currentDate.innerHTML = getZeros(time.getDate()) + "." + getZeros(time.getMonth()) + "." + time.getFullYear();
+        currentTimeDate.innerHTML = currentDate.innerHTML + " " + currentTime.innerHTML;
+    }
+    tips();
+    setInterval(tips,1000);
+
+    const list = document.querySelector('.list');
+    let data = [];
+
+    const options = document.querySelector('section');
+    const id = options.querySelector("#id");
+    const name = options.querySelector("#name");
+    const type = options.querySelector('select');
+    const value = options.querySelector('#value');
+    const submit = options.querySelector('button');
+
+    submit.addEventListener('click', add);
+
+    function add() {
+        if (id.value == '') return;
+        for (let elem of data) {
+            if (elem.id == id.value) return;
+        }
+        data.push({
+            id: id.value,
+            name: name.value,
+            type: type.value,
+            value: value.value
+        });
+        id.value = '';
+        name.value = '';
+        type.value = 'text';
+        value.value = '';
+
+        show();
+    }
+
+    function show() {
+        list.innerHTML = '';
+
+        for (let elem of data) {
+            let li = document.createElement('li');
+            li.innerHTML = elem.id + ': ';
+            let input = document.createElement('input');
+            input.type = elem.type;
+            input.placeholder = elem.name;
+            input.name = elem.name;
+            input.value = elem.value;
+            input.disabled = true;
+            li.append(input);
+            list.append(li);
+        }
+    }
+
+    const setup = document.querySelector('#setup');
+    setup.addEventListener('click', e=>{
+        if (data.length > 0) {
+            post('<?=$url?>', {
+                setup: true,
+                format: JSON.stringify(data)
+            });
+        }
+    });
+
+    /**
+     * From https://stackoverflow.com/a/133997
+     * sends a request to the specified url from a form. this will change the window location.
+     * @param {string} path the path to send the post request to
+     * @param {object} params the paramiters to add to the url
+     * @param {string} [method=post] the method to use on the form
+     */
+
+    function post(path, params, method) {
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
