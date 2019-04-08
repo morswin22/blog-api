@@ -1,0 +1,27 @@
+<style>
+    textarea {
+        max-width: 600px;
+        min-width: 600px;
+        min-height: 200px;
+        max-height: 200px;
+        margin-left: -170px;
+        text-align: left!important;
+    }
+</style>
+
+<header>Add a new post</header>
+
+<form action="<?=$url?>" method="POST">
+<?php
+
+    foreach($format as $element) {
+        if ($element["type"] == "textarea") {
+            print('<textarea type="'.$element["type"].'" name="'.$element["id"].'" placeholder="'.$element["name"].'">'.$element["value"].'</textarea>');
+        } else {
+            print('<input type="'.$element["type"].'" name="'.$element["id"].'" value="'.$element["value"].'" placeholder="'.$element["name"].'">');
+        }
+    }
+
+?>
+    <input type="submit" name="add" value="Add">
+</form>

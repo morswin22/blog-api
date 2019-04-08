@@ -5,5 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>API Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        body > form {
+            margin-top: 1.5em;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+        body > form input,
+        body > form textarea {
+            background-color: #fff;
+            border: 1px solid #a9a9a9;
+            border-radius: 2px;
+            padding: .3em;
+            margin-bottom: .5em;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body > form input[type=submit] {
+            cursor: pointer;
+            transition: background-color 200ms ease-in-out;
+        }
+        body > form input[type=submit]:hover {
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
 </head>
 <body>

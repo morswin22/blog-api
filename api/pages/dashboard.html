@@ -1,2 +1,67 @@
+<style>
+    body {
+        display: grid;
+        grid-template-areas: 
+            "header header header" 
+            "settings new logout" 
+            "posts posts posts";
+        grid-template-rows: 200px 100px auto;
+        grid-template-columns: auto auto auto;
+        min-height: 100vh;
+        justify-content: unset;
+    }
+    h2,.settings,.new,.logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    h2 {
+        grid-area: header;
+    }
+    .settings {
+        grid-area: settings;
+    }
+    .new {
+        grid-area: new;
+        flex-direction: column;
+    }
+    .new a {
+        margin-top: .2em;
+        display: block;
+        width: 70px;
+        height: 32px;
+        background-color: rgb(87, 190, 55);
+        text-align: center;
+        line-height: 32px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 2em;
+        border-radius: 3px;
+
+        transition: background-color 200ms ease-in-out;
+    }
+    .new a:hover {
+        background-color: #49a12e;
+    }
+    .new a:active {
+        background-color: #52b434;
+    }
+    .logout {
+        grid-area: logout;
+    }
+    .posts {
+        grid-area: posts;
+    }
+</style>
+
 <h2>Hi, <?=$userName?></h2>
 
+<a class="settings" href="?settings">Settings</a>
+
+<div class="new">Add a new post<a href="?add">+</a></div>
+
+<a class="logout" href="?logout">Logout</a>
+
+<div class="posts">
+
+</div>
