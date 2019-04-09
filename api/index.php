@@ -97,11 +97,18 @@ if (isMethod('info')) {
         );
         $newPost = array();
         foreach ($setup as $requirement) {
-            $value = $_POST[$requirement['id']]; // sanitaze this pls
+            $value = $_POST[$requirement['id']]; 
             foreach ($replacements as $find => $replace) {
                 $value = preg_replace("/$find/m", $replace, $value);
             }
             $newPost[$requirement['id']] = $value;
+            if ($requirement['type'] == "textarea") {
+                $value = $_POST[$requirement['id']."Parsed"]; 
+                foreach ($replacements as $find => $replace) {
+                    $value = preg_replace("/$find/m", $replace, $value);
+                }
+                $newPost[$requirement['id']."Parsed"] = $value;
+            }
         }
         unset($user['pass']); // clear that
         $posts[] = array(

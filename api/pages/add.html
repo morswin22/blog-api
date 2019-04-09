@@ -1,9 +1,15 @@
+<link rel="stylesheet" href="bbcode/themes/default.min.css" />
 <style>
-    textarea {
+    body > form input[type=submit] {
+        margin-top: 1em;
+    }
+    textarea,
+    .sceditor-container {
+        margin-bottom: .5em;
         max-width: 600px;
         min-width: 600px;
-        min-height: 200px;
-        max-height: 200px;
+        min-height: 300px;
+        max-height: 300px;
         margin-left: -170px;
         text-align: left!important;
     }
@@ -17,6 +23,7 @@
     foreach($format as $element) {
         if ($element["type"] == "textarea") {
             print('<textarea type="'.$element["type"].'" name="'.$element["id"].'" placeholder="'.$element["name"].'">'.$element["value"].'</textarea>');
+            print('<input type="text" value="" hidden id="'.$element["id"].'Parsed" name="'.$element["id"].'Parsed">');
         } else {
             print('<input type="'.$element["type"].'" name="'.$element["id"].'" value="'.$element["value"].'" placeholder="'.$element["name"].'">');
         }
@@ -25,3 +32,24 @@
 ?>
     <input type="submit" name="add" value="Add">
 </form>
+
+<script src="bbcode/sceditor.min.js"></script>
+<script src="bbcode/formats/bbcode.js"></script>
+<script>
+    let textareas = document.querySelectorAll('textarea');
+    for (let textarea of textareas) {
+        sceditor.create(textarea, {
+            format: 'bbcode',
+            style: 'bbcode/themes/content/default.min.css'
+        });
+    }
+    const form = document.querySelector('form');
+    form.addEventListener('submit', event=>{
+        let iframes = document.querySelectorAll("iframe");
+        for (let id in textareas) {
+            let parsed = document.querySelector("#" + textareas[id].name + "Parsed");
+            parsed.value = iframes[id].contentDocument.querySelector('body').innerHTML;
+        }
+        event.preventDefault();
+    });
+</script>

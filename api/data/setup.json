@@ -1,1 +1,1 @@
-[{"id":"title","name":"Title","type":"text","value":""},{"id":"content","name":"Content","type":"textarea","value":""},{"id":"author","name":"Author","type":"text","value":"CURRENT_USER"},{"id":"timestamp","name":"Time and date","type":"text","value":"CURRENT_TIME&DATE"}]
+[{"id":"title","name":"Title","type":"text","value":""},{"id":"Content","name":"Content","type":"textarea","value":""}]
