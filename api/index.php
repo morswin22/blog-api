@@ -12,7 +12,99 @@ $imagesPath = "data/images/";
 
 // quickly deliver posts
 if (isMethod('get')) {
-    // check all things
+    if (file_exists($setupPath) && file_exists($postsPath)) {
+        $setup = loadJSON($setupPath);
+        $results = loadJSON($postsPath);
+
+        if (isMethod("postID")) {
+            foreach($results as $id => $result) {
+                if ($result['postID'] != $_GET['postID']) {
+                    unset($results[$id]);
+                }
+            }
+        } else {
+            foreach($results as $id => $result) {
+                if (isMethod('date')) {
+                    if ($result['date'] != $_GET['date']) {
+                        unset($results[$id]);
+                    }
+                } else if (isMethod('dateStart') && isMethod('dateEnd')) {
+                    $start = strtotime($_GET['dateStart']);
+                    $post = strtotime($result['date']);
+                    $end = strtotime($_GET['dateEnd']);
+                    if ($post < $start || $post > $end) {
+                        unset($results[$id]);
+                    }
+                } else if (isMethod('dateStart')) {
+                    $start = strtotime($_GET['dateStart']);
+                    $post = strtotime($result['date']);
+                    if ($post < $start) {
+                        unset($results[$id]);
+                    }
+                } else if (isMethod('dateEnd')) {
+                    $post = strtotime($result['date']);
+                    $end = strtotime($_GET['dateEnd']);
+                    if ($post > $end) {
+                        unset($results[$id]);
+                    }
+                }
+            }
+
+            foreach($results as $id => $result) {
+                if (isMethod('time')) {
+                    if ($result['time'] != $_GET['time']) {
+                        unset($results[$id]);
+                    }
+                } else if (isMethod('timeStart') && isMethod('timeEnd')) {
+                    $start = strtotime($_GET['timeStart']);
+                    $post = strtotime($result['time']);
+                    $end = strtotime($_GET['timeEnd']);
+                    if ($post < $start || $post > $end) {
+                        unset($results[$id]);
+                    }
+                } else if (isMethod('timeStart')) {
+                    $start = strtotime($_GET['timeStart']);
+                    $post = strtotime($result['time']);
+                    if ($post < $start) {
+                        unset($results[$id]);
+                    }
+                } else if (isMethod('timeEnd')) {
+                    $post = strtotime($result['time']);
+                    $end = strtotime($_GET['timeEnd']);
+                    if ($post > $end) {
+                        unset($results[$id]);
+                    }
+                }
+            }
+    
+            foreach($results as $id => $result) {
+                if (isMethod('creatorName')) {
+                    if ($result['creator']['name'] != $_GET['creatorName']) {
+                        unset($results[$id]);
+                    }
+                }
+            }
+
+            foreach($results as $id => $result) {
+                if (isMethod('creatorEmail')) {
+                    if ($result['creator']['email'] != $_GET['creatorEmail']) {
+                        unset($results[$id]);
+                    }
+                }
+            }
+            
+            foreach($results as $id => $result) {
+                if (isMethod('data')) {
+                    // TODO:
+                    // use setup to make a /regular/ search on data
+                    // search on ...Parsed but using strip_tags($html)
+                }
+            }
+        }
+        print(json_encode($results));
+    } else {
+        redirect($apiPath);
+    }
     exit();
 }
 
@@ -94,6 +186,7 @@ if (isMethod('info')) {
             "CURRENT_DATE" => date("d.m.Y"),
             "CURRENT_TIME" => date("H:i"),
             "CURRENT_USER" => $user['name'],
+            'src="emoticons\/' => 'src="'.$apiPath.'emoticons/',
         );
         $newPost = array();
         foreach ($setup as $requirement) {
@@ -124,7 +217,13 @@ if (isMethod('info')) {
         render("add", array("format"=>$setup, "url"=>$apiPath));
     }
 } else {
-    render('dashboard', array('userName'=>$user['name'], 'posts'=>$posts));
+    // todo: create in setting option to select specific $req to be displayed as highlighted
+    $first = null;
+    foreach($setup as $req) {
+        $first = $req['id'];
+        break;
+    }
+    render('dashboard', array('userName'=>$user['name'], 'posts'=>$posts, 'first'=>$first));
 }
 
 ?>

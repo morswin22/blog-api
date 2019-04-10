@@ -51,6 +51,19 @@
     }
     .posts {
         grid-area: posts;
+        justify-self: center;
+        height: 100%;
+        width: 1020px;
+    }
+    .posts .post {
+        box-shadow: -3px 3px 4px 2px #ccc;
+        text-align: center;
+        float: left;
+        display: flex;
+        flex-direction: column;
+        margin: 30px;
+        width: 280px;
+        height: 150px;
     }
 </style>
 
@@ -63,5 +76,11 @@
 <a class="logout" href="?logout">Logout</a>
 
 <div class="posts">
+<?php
 
+    foreach($posts as $post) {
+        print('<div class="post"><p class="highlighted">'.$post['data'][$first].'</p><p>Created by <span title="'.$post['creator']['email'].'">'.$post['creator']['name'].'</span></p><p>at '.$post['time'].' '.$post['date'].'</p></div>');
+    }
+
+?>
 </div>
