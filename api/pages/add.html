@@ -15,22 +15,31 @@
     }
 </style>
 
-<header>Add a new post</header>
+<header><?=$msg?></header>
 
 <form action="<?=$url?>" method="POST">
 <?php
 
     foreach($format as $element) {
+        if (isset($post)) {
+            $value = $post['data'][$element['id']];
+        } else {
+            $value = $element['value'];
+        }
+
         if ($element["type"] == "textarea") {
-            print('<textarea type="'.$element["type"].'" name="'.$element["id"].'" placeholder="'.$element["name"].'">'.$element["value"].'</textarea>');
+            print('<textarea type="'.$element["type"].'" name="'.$element["id"].'" placeholder="'.$element["name"].'">'.$value.'</textarea>');
             print('<input type="text" value="" hidden id="'.$element["id"].'Parsed" name="'.$element["id"].'Parsed">');
         } else {
-            print('<input type="'.$element["type"].'" name="'.$element["id"].'" value="'.$element["value"].'" placeholder="'.$element["name"].'">');
+            print('<input type="'.$element["type"].'" name="'.$element["id"].'" value="'.$value.'" placeholder="'.$element["name"].'">');
         }
     }
 
+    if (isset($extra)) {
+        print('<input type="text" name="'.$extra['name'].'" value="'.$extra['value'].'" hidden>');
+    }
 ?>
-    <input type="submit" name="add" value="Add">
+    <input type="submit" name="add" value="<?=$action?>">
 </form>
 
 <script src="bbcode/sceditor.min.js"></script>

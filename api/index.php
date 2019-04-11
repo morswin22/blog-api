@@ -204,17 +204,50 @@ if (isMethod('info')) {
             }
         }
         unset($user['pass']); // clear that
-        $posts[] = array(
-            "data" => $newPost,
-            "creator" => $user,
-            "date" => date("d.m.Y"),
-            "time" => date("H:i"),
-            "postID" => $replacements["POST_ID"]
-        );
+        if (isPosted('edit') && isset($posts[$_POST['edit']-1])) {
+            $posts[$_POST['edit']-1]["data"] = $newPost;
+            $posts[$_POST['edit']-1]["lastEdited"] = array(
+                "editor" => $user,
+                "date" => date("d.m.Y"),
+                "time" => date("H:i")
+            );
+        } else {
+            $posts[] = array(
+                "data" => $newPost,
+                "creator" => $user,
+                "date" => date("d.m.Y"),
+                "time" => date("H:i"),
+                "postID" => $replacements["POST_ID"]
+            );
+        }
         saveJSON($postsPath, $posts);
         redirect($apiPath);
     } else {
-        render("add", array("format"=>$setup, "url"=>$apiPath));
+        render("add", array("msg"=> "Add a new post","format"=>$setup, "url"=>$apiPath, "action"=>"Add"));
+    }
+} else if (isMethod('edit')) {
+    if (isset($posts[$_GET['edit']-1])) {
+        render("add", array("msg"=> "Edit post #".$_GET['edit'],"format"=>$setup, "url"=>$apiPath, "post"=>$posts[$_GET['edit']-1], "action"=>"Edit", "extra"=>array("name"=>"edit", "value"=>$_GET['edit'])));
+    } else {
+        redirect($apiPath);
+    }
+} else if (isMethod('delete')) {
+    if (isset($posts[$_GET['delete']-1])) {
+        if (!isMethod('confirmed')) {
+            // todo: create in setting option to select specific $req to be displayed as highlighted
+            $first = null;
+            foreach($setup as $req) {
+                $first = $req['id'];
+                break;
+            }
+            render("delete", array("id"=>$_GET['delete'], "info"=>$posts[$_GET['delete']-1]['data'][$first]));
+        } else {
+            $posts[$_GET['delete']-1] = null; // todo write a funciton to deal with that
+            saveJSON($postsPath, $posts);
+            redirect($apiPath);
+        }
+    } else {
+        redirect($apiPath);
     }
 } else {
     // todo: create in setting option to select specific $req to be displayed as highlighted

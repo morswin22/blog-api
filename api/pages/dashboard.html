@@ -64,6 +64,32 @@
         margin: 30px;
         width: 280px;
         height: 150px;
+        position: relative;
+    }
+    .posts .post .options {
+        opacity: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        top: 0px;
+        height: 0px;
+        left: 0; right: 0;
+        background-color: rgb(231, 53, 53);
+        font-size: 0em;
+
+        transition: all 200ms ease-in-out;
+    }
+    .posts .post .options a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 5px;
+    }
+    .posts .post:hover .options {
+        opacity: 1;
+        height: 23px;
+        top: -23px;
+        font-size: 0.8em;
     }
 </style>
 
@@ -79,7 +105,7 @@
 <?php
 
     foreach($posts as $post) {
-        print('<div class="post"><p class="highlighted">'.$post['data'][$first].'</p><p>Created by <span title="'.$post['creator']['email'].'">'.$post['creator']['name'].'</span></p><p>at '.$post['time'].' '.$post['date'].'</p></div>');
+        print('<div class="post"><div class="options"><a href="?edit='.$post['postID'].'">🖊️ Edit</a><a href="?delete='.$post['postID'].'">Delete 🗑️</a></div><p class="highlighted">'.$post['data'][$first].'</p><p>Created by <span title="'.$post['creator']['email'].'">'.$post['creator']['name'].'</span></p><p>at '.$post['time'].' '.$post['date'].'</p></div>');
     }
 
 ?>
