@@ -30,6 +30,11 @@ function isPosted(...$args) {
     return true;
 }
 
+function isPost($postID) {
+    global $posts;
+    return (isset($posts[$postID-1]) && $posts[$postID-1] != null);
+}
+
 function login($email, $pass) {
     global $usersPath;
     $users = loadJSON($usersPath);

@@ -204,7 +204,7 @@ if (isMethod('info')) {
             }
         }
         unset($user['pass']); // clear that
-        if (isPosted('edit') && isset($posts[$_POST['edit']-1])) {
+        if (isPosted('edit') && isPost($_POST['edit'])) {
             $posts[$_POST['edit']-1]["data"] = $newPost;
             $posts[$_POST['edit']-1]["lastEdited"] = array(
                 "editor" => $user,
@@ -226,13 +226,13 @@ if (isMethod('info')) {
         render("add", array("msg"=> "Add a new post","format"=>$setup, "url"=>$apiPath, "action"=>"Add"));
     }
 } else if (isMethod('edit')) {
-    if (isset($posts[$_GET['edit']-1])) {
+    if (isPost($_GET['edit'])) {
         render("add", array("msg"=> "Edit post #".$_GET['edit'],"format"=>$setup, "url"=>$apiPath, "post"=>$posts[$_GET['edit']-1], "action"=>"Edit", "extra"=>array("name"=>"edit", "value"=>$_GET['edit'])));
     } else {
         redirect($apiPath);
     }
 } else if (isMethod('delete')) {
-    if (isset($posts[$_GET['delete']-1])) {
+    if (isPost($_GET['delete'])) {
         if (!isMethod('confirmed')) {
             // todo: create in setting option to select specific $req to be displayed as highlighted
             $first = null;
