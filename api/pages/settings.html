@@ -1,0 +1,66 @@
+<style>
+    body {
+        justify-content: initial;
+    }
+
+    header {
+        font-size: 1.6em;
+        display: flex;
+        align-items: center;
+        height: 200px;
+    }
+
+    .group {
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 15px;
+        position: relative;
+        margin: 1.5em;
+    }
+
+    .group > .label {
+        position: absolute;
+        font-size: 12px;
+        top: -8px;
+        left: 16px;
+        background-color: #fff;
+        padding: 0 2px;
+    }
+
+    .group > .option {
+        margin: 0;
+        margin-bottom: 1.2em;
+    }
+    .group > .option:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .option {
+        display: flex;
+        width: 600px;
+        align-items: center;
+        margin: 1.2em 0;
+    }
+
+    .option > select {
+        font-family: 'Montserrat', sans-serif;
+        margin-right: 15px;
+    }
+</style>
+
+<header>Settings menu</header>
+
+<div class="group">
+    <div class="label">Display</div>
+    <div class="option">
+        <select id="displayValue">
+            <?php 
+                // selected first
+                foreach($format as $req) {
+                    print('<option value="'.$req['id'].'">'.$req['name'].'</option>');
+                }
+            ?>
+        </select>
+        <div class="description">This setting allows you to control which value should be displayed along with the creator and date information on dashboard</div>
+    </div>
+</div>

@@ -171,7 +171,7 @@ if (isMethod('info')) {
     print_r($posts);
     echo "</pre>";
 } else if (isMethod("settings")) {
-
+    render("settings", array("returnHome"=>$apiPath, "format"=>$setup));
 } else if (isMethod("add")) {
     $hasAll = true;
     foreach ($setup as $requirement) {
@@ -223,11 +223,11 @@ if (isMethod('info')) {
         saveJSON($postsPath, $posts);
         redirect($apiPath);
     } else {
-        render("add", array("msg"=> "Add a new post","format"=>$setup, "url"=>$apiPath, "action"=>"Add"));
+        render("add", array("returnHome"=>$apiPath, "msg"=> "Add a new post","format"=>$setup, "url"=>$apiPath, "action"=>"Add"));
     }
 } else if (isMethod('edit')) {
     if (isPost($_GET['edit'])) {
-        render("add", array("msg"=> "Edit post #".$_GET['edit'],"format"=>$setup, "url"=>$apiPath, "post"=>$posts[$_GET['edit']-1], "action"=>"Edit", "extra"=>array("name"=>"edit", "value"=>$_GET['edit'])));
+        render("add", array("returnHome"=>$apiPath, "msg"=> "Edit post #".$_GET['edit'],"format"=>$setup, "url"=>$apiPath, "post"=>$posts[$_GET['edit']-1], "action"=>"Edit", "extra"=>array("name"=>"edit", "value"=>$_GET['edit'])));
     } else {
         redirect($apiPath);
     }
@@ -240,7 +240,7 @@ if (isMethod('info')) {
                 $first = $req['id'];
                 break;
             }
-            render("delete", array("id"=>$_GET['delete'], "info"=>$posts[$_GET['delete']-1]['data'][$first]));
+            render("delete", array("returnHome"=>$apiPath, "id"=>$_GET['delete'], "info"=>$posts[$_GET['delete']-1]['data'][$first]));
         } else {
             $posts[$_GET['delete']-1] = null; // todo write a funciton to deal with that
             saveJSON($postsPath, $posts);
