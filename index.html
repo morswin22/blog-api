@@ -8,11 +8,30 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    
+
     <header>Blog Example<small>This is just a preview</small></header>
 
-    <main>
-        
+    <main id="frontpage" style="display: none;">
+        <section id="latest"><p class="label">Latest</p><ul></ul></section>
+        <section class="search">
+            <input type="text" placeholder="Search" id="frontpageSearchInput">
+        </section>
+        <section id="featured"><p class="label">Featured</p><ul></ul></section>
+    </main>
+
+    <main id="searchpage" style="display: none;">
+        <section class="search">
+            <input type="text" placeholder="Search" id="searchpageSearchInput">
+        </section>
+        <section id="found"><p class="label">Results</p><ul>
+            <li>This feature isn't currently working</li>
+        </ul></section>
+    </main>
+
+    <main id="postpage" style="display: none;">
+        <section id="title"></section>
+        <section id="header"></section>
+        <section id="content"></section>
     </main>
 
     <footer>

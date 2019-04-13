@@ -46,6 +46,126 @@ body main {
   -ms-grid-row: 2;
   -ms-grid-column: 1;
   grid-area: main;
+  opacity: 1;
+  -webkit-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+
+body main section.search > input {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1em;
+  border: 0;
+  padding: 1em;
+  outline: none;
+}
+
+body main .search {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+body main#frontpage {
+  display: -ms-grid;
+  display: grid;
+      grid-template-areas: "latest" "search" "featured";
+  -ms-grid-columns: 700px;
+      grid-template-columns: 700px;
+  -ms-grid-rows: 180px 100px 330px;
+      grid-template-rows: 180px 100px 330px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+body main#frontpage #latest {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: latest;
+}
+
+body main#frontpage section.search {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: search;
+}
+
+body main#frontpage #featured {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  grid-area: featured;
+}
+
+body main#searchpage {
+  width: 700px;
+  justify-self: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body main#frontpage p.label, body main#searchpage p.label {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 30px;
+  margin: 0;
+}
+
+body main#frontpage ul, body main#searchpage ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body main#frontpage li, body main#searchpage li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 130px;
+  width: 180px;
+  margin: 10px calc(100px/6 + 10px);
+  -webkit-box-shadow: 0 0 5px 0 #ccc;
+          box-shadow: 0 0 5px 0 #ccc;
+  float: left;
+}
+
+body main#postpage {
+  width: 600px;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+body main#postpage #title {
+  text-align: center;
+  font-size: 2em;
+  font-weight: 700;
+}
+
+body main#postpage #header {
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: 700;
+  margin: 1.5em;
+}
+
+body main.hidden {
+  opacity: 0;
+  z-index: -1;
 }
 
 body footer {

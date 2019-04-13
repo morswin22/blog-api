@@ -21,7 +21,12 @@ if (isMethod('get')) {
             foreach($results as $id => $result) {
                 if ($result['postID'] != $_GET['postID']) {
                     unset($results[$id]);
+                } else {
+                    print(json_encode($result));
                 }
+            }
+            if (count($results) == 0) {
+                print(json_encode(null));
             }
         } else {
             foreach($results as $id => $result) {
@@ -101,8 +106,8 @@ if (isMethod('get')) {
                     // search on ...Parsed but using strip_tags($html)
                 }
             }
+            print(json_encode(array_reverse($results)));
         }
-        print(json_encode($results));
     } else {
         redirect($apiPath);
     }

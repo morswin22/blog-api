@@ -1,1 +1,1 @@
-[{"id":"title","name":"Title","type":"text","value":""},{"id":"Content","name":"Content","type":"textarea","value":""}]
+[{"id":"title","name":"Title","type":"text","value":""},{"id":"header","name":"Header","type":"text","value":""},{"id":"content","name":"Content","type":"textarea","value":""},{"id":"tags","name":"Tags","type":"text","value":""}]
