@@ -42,7 +42,7 @@
         margin: 1.2em 0;
     }
 
-    .option > select {
+    .option > :not(.description) {
         font-family: 'Montserrat', sans-serif;
         margin-right: 15px;
     }
@@ -57,10 +57,54 @@
             <?php 
                 // selected first
                 foreach($format as $req) {
-                    print('<option value="'.$req['id'].'">'.$req['name'].'</option>');
+                    if ($req['id'] == $displayValue) {
+                        print('<option value="'.$req['id'].'" selected="selected">'.$req['name'].'</option>');
+                    } else {
+                        print('<option value="'.$req['id'].'">'.$req['name'].'</option>');
+                    }
                 }
             ?>
         </select>
         <div class="description">This setting allows you to control which value should be displayed along with the creator and date information on dashboard</div>
     </div>
 </div>
+
+<script>
+// From https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+function postData(url = ``, data = {}) {
+    // From https://github.com/github/fetch/issues/263#issuecomment-209548790
+    const searchParams = Object.keys(data).map((key) => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+    }).join('&');
+  // Default options are marked with *
+    return fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+            // "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: searchParams, // body data type must match "Content-Type" header
+    })
+    // .then(response => response.json()); // parses JSON response into native Javascript objects 
+}
+
+    let tags = ['displayValue'];
+
+    for (const tag of tags) {
+        const html = document.querySelector('#'+tag);
+        html.addEventListener('change', e=>{
+            let value = html.value;
+            postData('<?=$returnHome?>', {
+                changeSettings: true,
+                id: tag,
+                value: value
+            });
+        });
+    }
+
+</script>

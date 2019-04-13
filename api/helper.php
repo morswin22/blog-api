@@ -60,4 +60,12 @@ function render($name, $variables = array()) {
     require "pages/templateEnd.html";
 }
 
+function shortenStr($str, $max, $replacement = "...") {
+    if (strlen($str) > $max) {
+        return substr($str, 0, $max-strlen($replacement)) . $replacement;
+    } else {
+        return $str;
+    }
+}
+
 ?>

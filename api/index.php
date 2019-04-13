@@ -8,7 +8,8 @@ $apiPath = "/api/";
 $usersPath = "data/users.json";
 $setupPath = "data/setup.json";
 $postsPath = "data/posts.json";
-$imagesPath = "data/images/";
+$imagesPath = "data/images/"; // todo
+$settingsPath = "data/settings.json";
 
 // quickly deliver posts
 if (isMethod('get')) {
@@ -163,6 +164,25 @@ if (!is_dir($imagesPath)) {
 }
 $posts = loadJSON($postsPath);
 
+// setup settings
+if (!file_exists($settingsPath)) {
+    $first = null;
+    foreach($setup as $req) {
+        $first = $req['id'];
+        break;
+    }
+    saveJSON($settingsPath, array(
+        "displayValue"=> $first,
+        
+    ));
+}
+if (isPosted('changeSettings', 'id', 'value')) {
+    $settings = loadJSON($settingsPath);
+    if (isset($settings[$_POST['id']])) $settings[$_POST['id']] = $_POST['value'];
+    saveJSON($settingsPath, $settings);
+}
+$settings = loadJSON($settingsPath);
+
 // show dashboard
 if (isMethod('info')) {
     echo "<pre>";
@@ -171,7 +191,7 @@ if (isMethod('info')) {
     print_r($posts);
     echo "</pre>";
 } else if (isMethod("settings")) {
-    render("settings", array("returnHome"=>$apiPath, "format"=>$setup));
+    render("settings", array("returnHome"=>$apiPath, "format"=>$setup, "displayValue"=>$settings['displayValue']));
 } else if (isMethod("add")) {
     $hasAll = true;
     foreach ($setup as $requirement) {
@@ -234,13 +254,7 @@ if (isMethod('info')) {
 } else if (isMethod('delete')) {
     if (isPost($_GET['delete'])) {
         if (!isMethod('confirmed')) {
-            // todo: create in setting option to select specific $req to be displayed as highlighted
-            $first = null;
-            foreach($setup as $req) {
-                $first = $req['id'];
-                break;
-            }
-            render("delete", array("returnHome"=>$apiPath, "id"=>$_GET['delete'], "info"=>$posts[$_GET['delete']-1]['data'][$first]));
+            render("delete", array("returnHome"=>$apiPath, "id"=>$_GET['delete'], "info"=>$posts[$_GET['delete']-1]['data'][$settings['displayValue']]));
         } else {
             $posts[$_GET['delete']-1] = null; // todo write a funciton to deal with that
             saveJSON($postsPath, $posts);
@@ -250,13 +264,7 @@ if (isMethod('info')) {
         redirect($apiPath);
     }
 } else {
-    // todo: create in setting option to select specific $req to be displayed as highlighted
-    $first = null;
-    foreach($setup as $req) {
-        $first = $req['id'];
-        break;
-    }
-    render('dashboard', array('userName'=>$user['name'], 'posts'=>$posts, 'first'=>$first));
+    render('dashboard', array('userName'=>$user['name'], 'posts'=>$posts, 'displayValue'=>$settings['displayValue']));
 }
 
 ?>

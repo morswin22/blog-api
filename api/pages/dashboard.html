@@ -106,7 +106,7 @@
 
     foreach($posts as $post) {
         if ($post == null) continue;
-        print('<div class="post"><div class="options"><a href="?edit='.$post['postID'].'">🖊️ Edit</a><a href="?delete='.$post['postID'].'">Delete 🗑️</a></div><p class="highlighted">'.$post['data'][$first].'</p><p>Created by <span title="'.$post['creator']['email'].'">'.$post['creator']['name'].'</span></p><p>at '.$post['time'].' '.$post['date'].'</p></div>');
+        print('<div class="post"><div class="options"><a href="?edit='.$post['postID'].'">🖊️ Edit</a><a href="?delete='.$post['postID'].'">Delete 🗑️</a></div><p class="highlighted">'.shortenStr($post['data'][$displayValue], 32).'</p><p>Created by <span title="'.$post['creator']['email'].'">'.$post['creator']['name'].'</span></p><p>at '.$post['time'].' '.$post['date'].'</p></div>');
     }
 
 ?>
