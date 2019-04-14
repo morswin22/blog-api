@@ -60,11 +60,30 @@ body main section.search > input {
 }
 
 body main .search {
+  position: relative;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
   -ms-grid-column-align: center;
       justify-self: center;
+}
+
+body main .search::after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  background-color: #ccc;
+  -webkit-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+}
+
+body main .search:hover::after, body main .search:focus-within::after {
+  left: 0%;
+  right: 0%;
 }
 
 body main#frontpage {
